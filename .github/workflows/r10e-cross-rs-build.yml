@@ -1,0 +1,24 @@
+# Possibly reproducible build with cross-rs and Nix
+name: "Reproducible build with cross-rs"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+    nix-cross-rs-build:
+      name: "r10e cross-rs build"
+      strategy:
+        fail-fast: false
+        matrix:
+          os: [ubuntu-18.04]
+      runs-on: ${{ matrix.os }}
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Cross build artifacts
+        run: |
+          cd ${{ github.workspace }}
+          make cross-rs
