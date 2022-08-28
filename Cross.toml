@@ -1,0 +1,20 @@
+[build.env]
+passthrough = [
+    "RUSTFLAGS",
+]
+
+[target.x86_64-unknown-linux-musl]
+# v0.2.4
+image = "ghcr.io/cross-rs/x86_64-unknown-linux-musl@sha256:79e3cf3994f70c6a318f003a94313d1b13a4de564e37998f9b0f7b1943153cf7"
+
+[target.armv7-unknown-linux-musleabihf]
+# v0.2.4
+image = "ghcr.io/cross-rs/armv7-unknown-linux-musleabihf@sha256:dd17a0ad95a3fce9c15230f60f8ed3bf6e60d81de260fbb9e457e4a49de8a43a"
+
+[target.arm-unknown-linux-musleabihf]
+# 0.2.4
+image = "ghcr.io/cross-rs/arm-unknown-linux-musleabihf@sha256:35209e76c3fa59a8330c4241c2c9ffb91ae29a211890b050923a82e0739f3ed1"
+
+[target.aarch64-unknown-linux-musl]
+# 0.2.4
+image = "ghcr.io/cross-rs/aarch64-unknown-linux-musl@sha256:bc51668f05f063030234df49145267791963a6c36d1e858b61c86654859c369c"
