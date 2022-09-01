@@ -30,23 +30,40 @@ RUN nix-env --option filter-syscalls false -i git && \
 
 ENV NIX_PATH=nixpkgs=/build/nixpkgs:rust-overlay=/build/rust-overlay
 #########################################################
-# Step 2: Prepare Rust project
+# Step 2: Prepare Nix Shells for Caching
 #########################################################
-COPY src /build/${RUST_PROJECT_NAME}/src
-COPY Cargo.toml /build/${RUST_PROJECT_NAME}/Cargo.toml
-COPY Cargo.lock /build/${RUST_PROJECT_NAME}/Cargo.lock
-COPY nix-rust-overlay/shell-aarch64.nix /build/${RUST_PROJECT_NAME}/shell-aarch64.nix
+COPY nix-rust-overlay/shell-x86_64.nix /build/${RUST_PROJECT_NAME}/shell-x86_64.nix
 COPY nix-rust-overlay/shell-armv7.nix /build/${RUST_PROJECT_NAME}/shell-armv7.nix
-COPY nix-rust-overlay/Makefile /build/${RUST_PROJECT_NAME}/Makefile
+COPY nix-rust-overlay/shell-armv6.nix /build/${RUST_PROJECT_NAME}/shell-armv6.nix
+COPY nix-rust-overlay/shell-aarch64.nix /build/${RUST_PROJECT_NAME}/shell-aarch64.nix
+
+RUN cd /build/${RUST_PROJECT_NAME} && \
+    nix-shell shell-x86_64.nix && \
+    nix-shell shell-armv6.nix && \
+    nix-shell shell-armv7.nix && \
+    nix-shell shell-aarch64.nix
 
 #########################################################
 # Step 3: Cross builds for various targets
 #########################################################
+COPY src /build/${RUST_PROJECT_NAME}/src
+COPY Cargo.toml /build/${RUST_PROJECT_NAME}/Cargo.toml
+COPY Cargo.lock /build/${RUST_PROJECT_NAME}/Cargo.lock
+COPY nix-rust-overlay/Makefile /build/${RUST_PROJECT_NAME}/Makefile
+
 RUN cd /build/${RUST_PROJECT_NAME} && \
-    nix-shell shell-aarch64.nix \
-      --run "TARGET=aarch64-unknown-linux-musl make && \
-             TARGET=aarch64-unknown-linux-musl make run"
+    nix-shell shell-x86_64.nix \
+      --run "TARGET=x86_64-unknown-linux-musl make && \
+             TARGET=x86_64-unknown-linux-musl make run"
+RUN cd /build/${RUST_PROJECT_NAME} && \
+    nix-shell shell-armv6.nix \
+      --run "TARGET=arm-unknown-linux-musleabihf make && \
+             TARGET=arm-unknown-linux-musleabihf make run"
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-armv7.nix \
       --run "TARGET=armv7-unknown-linux-musleabihf make && \
              TARGET=armv7-unknown-linux-musleabihf make run"
+RUN cd /build/${RUST_PROJECT_NAME} && \
+    nix-shell shell-aarch64.nix \
+      --run "TARGET=aarch64-unknown-linux-musl make && \
+             TARGET=aarch64-unknown-linux-musl make run"

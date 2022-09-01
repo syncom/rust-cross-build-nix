@@ -1,0 +1,21 @@
+# h/t https://github.com/oxalica/rust-overlay/tree/master/examples/cross-aarch64
+# When invoking with `nix-shell`, add "rust-overlay=/path/to/rust-overlay/dir"
+# to $NIX_PATH
+(import <nixpkgs> {
+  crossSystem = "x86_64-linux";
+  overlays = [ (import <rust-overlay>) ];
+}).pkgsMusl.pkgsStatic.callPackage (
+{ mkShell, stdenv, rust-bin, pkg-config, qemu }:
+mkShell {
+  nativeBuildInputs = [
+    rust-bin.stable.latest.default
+    pkg-config
+  ];
+
+  depsBuildBuild = [ qemu ];
+
+  buildInputs = [ ];
+
+  CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER = "${stdenv.cc.targetPrefix}cc";
+  CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_RUNNER = "qemu-x86_64";
+}) {}

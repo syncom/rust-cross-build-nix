@@ -7,7 +7,7 @@ mkfile_dir := $(dir $(mkfile_path))
 
 .PHONY: all
 all: Cargo.toml Cargo.lock src/main.rs
-	cargo build $(CARGO_FLAGS)
+	cargo build -vv --locked $(CARGO_FLAGS)
 	cp target/$(TARGET)/release/hello-random out/hello-random-$(TARGET)
 
 .PHONY: run
@@ -17,7 +17,7 @@ run: all
 # This target calls other targets to build reproducible artifacts
 .PHONY: r10e-build
 r10e-build: Dockerfile run.sh
-	$(mkfile_dir)/run.sh 2>/dev/null
+	$(mkfile_dir)/run.sh
 
 .PHONY: clean
 clean:
