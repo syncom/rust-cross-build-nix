@@ -7,8 +7,9 @@ for cross-building, and the latter makes the builds reproducible.
 
 ## How to build
 
+In the directory root of the repository
+
 ```bash
-cd nix-cross-rs
-make
-# `make clean` to clean up
+make cross-rs
+# `make cr-clean` to clean up
 ```
