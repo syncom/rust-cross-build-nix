@@ -17,7 +17,7 @@ rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}"
 
 echo "Cross building started..."
-docker run -v "${OUT_DIR}":/tmp/out_rust-overlay --rm -i "${BUILDER_TAG_NAME}" << CMD
+docker run --platform linux/amd64 -v "${OUT_DIR}":/tmp/out_rust-overlay --rm -i "${BUILDER_TAG_NAME}" << CMD
 mkdir -p /tmp/out_rust-overlay && \
 cp -r /build/rust-cross-build-nix/out/* /tmp/out_rust-overlay/
 CMD

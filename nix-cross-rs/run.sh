@@ -17,7 +17,7 @@ rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}"
 
 echo "Cross building started..."
-docker run --privileged -v /var/lib/containers/storage -v "${OUT_DIR}":/build/rust-cross-build-nix/out --rm -i "${BUILDER_TAG_NAME}"
+docker run --platform linux/amd64 --privileged -v /var/lib/containers/storage -v "${OUT_DIR}":/build/rust-cross-build-nix/out --rm -i "${BUILDER_TAG_NAME}"
 
 echo
 echo "============ HELLO-RANDOM ARTIFACTS INFO ============"
