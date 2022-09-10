@@ -11,7 +11,7 @@ BUILDER_TAG_NAME="rust-overlay_builder:$REVISION"
 echo "Creating builder container image..."
 # Need to run docker build in script's parent directory
 cd "${SCRIPT_DIR}/.."
-docker build -f "${SCRIPT_DIR}/Dockerfile" -t "${BUILDER_TAG_NAME}" .
+docker build --platform linux/amd64 -f "${SCRIPT_DIR}/Dockerfile" -t "${BUILDER_TAG_NAME}" .
 docker images "${BUILDER_TAG_NAME}"
 rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}"

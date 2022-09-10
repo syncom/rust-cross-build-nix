@@ -18,6 +18,10 @@ ENV NIXPKGS_COMMIT_SHA="692574660e1f1e397b6e48065c931e8758c5ad16"
 # 0.2.4
 ENV CROSS_COMMIT_SHA="4645d937bdae6952d9df38eff3ecb91fd719c3bd"
 
+# Apple M1 workaround
+COPY nix.conf /build/nix.conf
+ENV NIX_USER_CONF_FILES=/build/nix.conf
+
 RUN nix-env --option filter-syscalls false -i git gnused && \
     mkdir -p /build/nixpkgs && \
     cd nixpkgs && \
@@ -40,6 +44,7 @@ ENV RUSTC_VERSION=1.63.0
 ENV CARGO_HOME="/build/.cargo"
 ENV RUSTUP_HOME="/build/.rustup"
 ENV PATH="${CARGO_HOME}/bin:${RUSTUP_HOME}/toolchains/${RUSTC_VERSION}-x86_64-unknown-linux-gnu/bin:${PATH}"
+
 #########################################################
 # Step 2: Prepare Rust project
 #########################################################

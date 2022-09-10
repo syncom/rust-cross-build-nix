@@ -13,7 +13,11 @@ ENV NIXPKGS_COMMIT_SHA="ce6aa13369b667ac2542593170993504932eb836"
 # rust-overlay version 20220827
 ENV RUST_OVERLAY_COMMIT_SHA="0c4c1432353e12b325d1472bea99e364871d2cb3"
 
-RUN nix-env --option filter-syscalls false -i git && \
+# Apple M1 workaround
+COPY nix.conf /build/nix.conf
+ENV NIX_USER_CONF_FILES=/build/nix.conf
+
+RUN nix-env -i git && \
     mkdir -p /build/nixpkgs && \
     cd nixpkgs && \
     git init && \
@@ -29,6 +33,7 @@ RUN nix-env --option filter-syscalls false -i git && \
     mkdir -p /build/${RUST_PROJECT_NAME}/out
 
 ENV NIX_PATH=nixpkgs=/build/nixpkgs:rust-overlay=/build/rust-overlay
+
 #########################################################
 # Step 2: Prepare Nix Shells for Caching
 #########################################################
