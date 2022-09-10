@@ -8,6 +8,26 @@ REVISION=$(git --work-tree="${SCRIPT_DIR}"/../ --git-dir="${SCRIPT_DIR}"/../.git
   rev-parse HEAD)
 BUILDER_TAG_NAME="rust-overlay_builder:$REVISION"
 
+#########################################
+# Self test
+#########################################
+err() {
+  echo -e "$*"
+  exit 1
+}
+
+self_test() {
+  # Check sha256sum
+  command -v sha256sum &>/dev/null || \
+    err "sha256sum not found. Please install coreutils first"
+
+  # Check docker
+  docker info &>/dev/null || \
+    err "Make sure docker daemon is running"
+}
+
+# Let's go
+self_test
 echo "Creating builder container image..."
 # Need to run docker build in script's parent directory
 cd "${SCRIPT_DIR}/.."
