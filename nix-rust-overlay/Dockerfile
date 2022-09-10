@@ -56,19 +56,20 @@ COPY Cargo.toml /build/${RUST_PROJECT_NAME}/Cargo.toml
 COPY Cargo.lock /build/${RUST_PROJECT_NAME}/Cargo.lock
 COPY nix-rust-overlay/Makefile /build/${RUST_PROJECT_NAME}/Makefile
 
+# echo to NOP qemu commands to get around issue on Apple M1
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-x86_64.nix \
       --run "TARGET=x86_64-unknown-linux-musl make && \
-             TARGET=x86_64-unknown-linux-musl make run"
+             echo TARGET=x86_64-unknown-linux-musl make run"
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-armv6.nix \
       --run "TARGET=arm-unknown-linux-musleabihf make && \
-             TARGET=arm-unknown-linux-musleabihf make run"
+             echo TARGET=arm-unknown-linux-musleabihf make run"
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-armv7.nix \
       --run "TARGET=armv7-unknown-linux-musleabihf make && \
-             TARGET=armv7-unknown-linux-musleabihf make run"
+             echo TARGET=armv7-unknown-linux-musleabihf make run"
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-aarch64.nix \
       --run "TARGET=aarch64-unknown-linux-musl make && \
-             TARGET=aarch64-unknown-linux-musl make run"
+             echo TARGET=aarch64-unknown-linux-musl make run"
