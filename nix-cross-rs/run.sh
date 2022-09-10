@@ -11,13 +11,13 @@ BUILDER_TAG_NAME="cross-rs_builder:$REVISION"
 echo "Creating builder container image..."
 # Need to run docker build in script's parent directory
 cd "${SCRIPT_DIR}/.."
-docker build -f "${SCRIPT_DIR}/Dockerfile" -t "${BUILDER_TAG_NAME}" .
+docker build --platform linux/amd64 -f "${SCRIPT_DIR}/Dockerfile" -t "${BUILDER_TAG_NAME}" .
 docker images "${BUILDER_TAG_NAME}"
 rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}"
 
 echo "Cross building started..."
-docker run --privileged -v /var/lib/containers/storage -v "${OUT_DIR}":/build/rust-cross-build-nix/out --rm -i "${BUILDER_TAG_NAME}"
+docker run --platform linux/amd64 --privileged -v /var/lib/containers/storage -v "${OUT_DIR}":/build/rust-cross-build-nix/out --rm -i "${BUILDER_TAG_NAME}"
 
 echo
 echo "============ HELLO-RANDOM ARTIFACTS INFO ============"

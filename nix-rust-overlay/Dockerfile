@@ -13,7 +13,11 @@ ENV NIXPKGS_COMMIT_SHA="ce6aa13369b667ac2542593170993504932eb836"
 # rust-overlay version 20220827
 ENV RUST_OVERLAY_COMMIT_SHA="0c4c1432353e12b325d1472bea99e364871d2cb3"
 
-RUN nix-env --option filter-syscalls false -i git && \
+# Apple M1 workaround
+COPY nix.conf /build/nix.conf
+ENV NIX_USER_CONF_FILES=/build/nix.conf
+
+RUN nix-env -i git && \
     mkdir -p /build/nixpkgs && \
     cd nixpkgs && \
     git init && \
@@ -29,6 +33,7 @@ RUN nix-env --option filter-syscalls false -i git && \
     mkdir -p /build/${RUST_PROJECT_NAME}/out
 
 ENV NIX_PATH=nixpkgs=/build/nixpkgs:rust-overlay=/build/rust-overlay
+
 #########################################################
 # Step 2: Prepare Nix Shells for Caching
 #########################################################
@@ -51,19 +56,20 @@ COPY Cargo.toml /build/${RUST_PROJECT_NAME}/Cargo.toml
 COPY Cargo.lock /build/${RUST_PROJECT_NAME}/Cargo.lock
 COPY nix-rust-overlay/Makefile /build/${RUST_PROJECT_NAME}/Makefile
 
+# echo to NOP qemu commands to get around issue on Apple M1
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-x86_64.nix \
       --run "TARGET=x86_64-unknown-linux-musl make && \
-             TARGET=x86_64-unknown-linux-musl make run"
+             echo TARGET=x86_64-unknown-linux-musl make run"
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-armv6.nix \
       --run "TARGET=arm-unknown-linux-musleabihf make && \
-             TARGET=arm-unknown-linux-musleabihf make run"
+             echo TARGET=arm-unknown-linux-musleabihf make run"
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-armv7.nix \
       --run "TARGET=armv7-unknown-linux-musleabihf make && \
-             TARGET=armv7-unknown-linux-musleabihf make run"
+             echo TARGET=armv7-unknown-linux-musleabihf make run"
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-aarch64.nix \
       --run "TARGET=aarch64-unknown-linux-musl make && \
-             TARGET=aarch64-unknown-linux-musl make run"
+             echo TARGET=aarch64-unknown-linux-musl make run"
