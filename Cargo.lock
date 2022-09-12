@@ -112,7 +112,7 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 [[package]]
 name = "zstd"
 version = "0.11.2+zstd.1.5.2"
-source = "git+https://github.com/gyscos/zstd-rs?rev=56c8b52b6d448e376e746fc062077f68febc03a3#56c8b52b6d448e376e746fc062077f68febc03a3"
+source = "git+https://github.com/syncom/zstd-rs?rev=abbc3b6a21c9825243933cbb6778781608db56dc#abbc3b6a21c9825243933cbb6778781608db56dc"
 dependencies = [
  "zstd-safe",
 ]
@@ -120,7 +120,7 @@ dependencies = [
 [[package]]
 name = "zstd-safe"
 version = "5.0.2+zstd.1.5.2"
-source = "git+https://github.com/gyscos/zstd-rs?rev=56c8b52b6d448e376e746fc062077f68febc03a3#56c8b52b6d448e376e746fc062077f68febc03a3"
+source = "git+https://github.com/syncom/zstd-rs?rev=abbc3b6a21c9825243933cbb6778781608db56dc#abbc3b6a21c9825243933cbb6778781608db56dc"
 dependencies = [
  "libc",
  "zstd-sys",
@@ -129,7 +129,7 @@ dependencies = [
 [[package]]
 name = "zstd-sys"
 version = "2.0.1+zstd.1.5.2"
-source = "git+https://github.com/gyscos/zstd-rs?rev=56c8b52b6d448e376e746fc062077f68febc03a3#56c8b52b6d448e376e746fc062077f68febc03a3"
+source = "git+https://github.com/syncom/zstd-rs?rev=abbc3b6a21c9825243933cbb6778781608db56dc#abbc3b6a21c9825243933cbb6778781608db56dc"
 dependencies = [
  "cc",
  "libc",
