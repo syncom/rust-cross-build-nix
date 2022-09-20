@@ -7,7 +7,7 @@ mkfile_dir := $(dir $(mkfile_path))
 
 .PHONY: all
 all: Cargo.toml Cargo.lock src/main.rs
-	cargo build -vv --locked $(CARGO_FLAGS)
+	OPENSSL_STATIC=1 cargo build -vv --locked $(CARGO_FLAGS)
 	cp target/$(TARGET)/release/hello-random out/hello-random-$(TARGET)
 
 .PHONY: run

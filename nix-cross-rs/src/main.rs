@@ -15,9 +15,5 @@ fn main() -> std::io::Result<()> {
     let infile1 = std::fs::File::open("infile")?;
     zstd::stream::copy_encode(&infile1, &mut outfile, 0)?;
 
-    // Test linking against OpenSSL
-    openssl::init();
-    assert!(openssl::version::version().starts_with("OpenSSL "));
-
     Ok(())
 }

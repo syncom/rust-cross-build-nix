@@ -48,11 +48,11 @@ ENV PATH="${CARGO_HOME}/bin:${RUSTUP_HOME}/toolchains/${RUSTC_VERSION}-x86_64-un
 #########################################################
 # Step 2: Prepare Rust project
 #########################################################
-COPY src /build/${RUST_PROJECT_NAME}/src
-COPY Cargo.toml /build/${RUST_PROJECT_NAME}/Cargo.toml
-COPY Cross.toml /build/${RUST_PROJECT_NAME}/Cross.toml
-COPY Cargo.lock /build/${RUST_PROJECT_NAME}/Cargo.lock
-COPY rust-toolchain /build/${RUST_PROJECT_NAME}/rust-toolchain
+COPY nix-cross-rs/src /build/${RUST_PROJECT_NAME}/src
+COPY nix-cross-rs/Cargo.toml /build/${RUST_PROJECT_NAME}/Cargo.toml
+COPY nix-cross-rs/Cross.toml /build/${RUST_PROJECT_NAME}/Cross.toml
+COPY nix-cross-rs/Cargo.lock /build/${RUST_PROJECT_NAME}/Cargo.lock
+COPY nix-cross-rs/rust-toolchain /build/${RUST_PROJECT_NAME}/rust-toolchain
 COPY nix-cross-rs/nixbuild.sh /build/${RUST_PROJECT_NAME}/nixbuild.sh
 COPY nix-cross-rs/shell.nix /build/${RUST_PROJECT_NAME}/shell.nix
 
