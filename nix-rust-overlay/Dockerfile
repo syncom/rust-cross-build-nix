@@ -58,8 +58,6 @@ RUN cd /build/${RUST_PROJECT_NAME} && \
 RUN cd /build/${RUST_PROJECT_NAME} && \
       nix-shell shell-armv7.nix
 
-RUN cd /build/${RUST_PROJECT_NAME} && nix-shell shell-armv6.nix
-
 #########################################################
 # Step 3: Cross builds for various targets
 #########################################################
