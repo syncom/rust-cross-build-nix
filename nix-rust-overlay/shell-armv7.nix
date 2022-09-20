@@ -5,16 +5,16 @@
   crossSystem = "armv7l-linux";
   overlays = [ (import <rust-overlay>) ];
 }).pkgsMusl.pkgsStatic.callPackage (
-{ mkShell, stdenv, rust-bin, pkg-config, qemu }:
+{ mkShell, stdenv, rust-bin, pkg-config, openssl, qemu }:
 mkShell {
   nativeBuildInputs = [
-    rust-bin.stable.latest.default
+    rust-bin.stable.latest.minimal
     pkg-config
   ];
 
   depsBuildBuild = [ qemu ];
 
-  buildInputs = [ ];
+  buildInputs = [ openssl ];
 
   CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER = "${stdenv.cc.targetPrefix}cc";
   CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_RUNNER = "qemu-arm";

@@ -1,0 +1,18 @@
+diff --git a/pkgs/os-specific/linux/musl/default.nix b/pkgs/os-specific/linux/musl/default.nix
+index fb0d1911..5ca8d700 100644
+--- a/pkgs/os-specific/linux/musl/default.nix
++++ b/pkgs/os-specific/linux/musl/default.nix
+@@ -40,11 +40,11 @@ let
+ in
+ stdenv.mkDerivation rec {
+   pname = "musl";
+-  version = "1.2.3";
++  version = "1.1.24";
+ 
+   src = fetchurl {
+     url    = "https://musl.libc.org/releases/${pname}-${version}.tar.gz";
+-    sha256 = "sha256-fVsLYGJSHkYn4JnkydyCSNMqMChelZt+7Kp4DPjP1KQ=";
++    sha256 = "18r2a00k82hz0mqdvgm7crzc7305l36109c0j9yjmkxj2alcjw0k";
+   };
+ 
+   enableParallelBuilding = true;

@@ -38,15 +38,27 @@ ENV NIX_PATH=nixpkgs=/build/nixpkgs:rust-overlay=/build/rust-overlay
 # Step 2: Prepare Nix Shells for Caching
 #########################################################
 COPY nix-rust-overlay/shell-x86_64.nix /build/${RUST_PROJECT_NAME}/shell-x86_64.nix
+COPY nix-rust-overlay/shell-aarch64.nix /build/${RUST_PROJECT_NAME}/shell-aarch64.nix
 COPY nix-rust-overlay/shell-armv7.nix /build/${RUST_PROJECT_NAME}/shell-armv7.nix
 COPY nix-rust-overlay/shell-armv6.nix /build/${RUST_PROJECT_NAME}/shell-armv6.nix
-COPY nix-rust-overlay/shell-aarch64.nix /build/${RUST_PROJECT_NAME}/shell-aarch64.nix
+# Copy patch for musl-1.1.24
+COPY nix-rust-overlay/musl-1.1.24.patch /build/musl-1.1.24.patch
 
+# Warm up the cache layers
 RUN cd /build/${RUST_PROJECT_NAME} && \
-    nix-shell shell-x86_64.nix && \
-    nix-shell shell-armv6.nix && \
-    nix-shell shell-armv7.nix && \
-    nix-shell shell-aarch64.nix
+      nix-shell shell-x86_64.nix
+RUN cd /build/${RUST_PROJECT_NAME} && \
+      nix-shell shell-aarch64.nix
+# Use musl-1.1.24 for 32-bit platforms, to work around a cross building issue
+# similar to the one discussed in
+# https://stackoverflow.com/questions/61934997/undefined-reference-to-stat-time64-when-cross-compiling-rust-project-on-mu
+RUN cd /build/nixpkgs && git apply /build/musl-1.1.24.patch
+RUN cd /build/${RUST_PROJECT_NAME} && \
+      nix-shell shell-armv6.nix
+RUN cd /build/${RUST_PROJECT_NAME} && \
+      nix-shell shell-armv7.nix
+
+RUN cd /build/${RUST_PROJECT_NAME} && nix-shell shell-armv6.nix
 
 #########################################################
 # Step 3: Cross builds for various targets
@@ -56,11 +68,19 @@ COPY Cargo.toml /build/${RUST_PROJECT_NAME}/Cargo.toml
 COPY Cargo.lock /build/${RUST_PROJECT_NAME}/Cargo.lock
 COPY nix-rust-overlay/Makefile /build/${RUST_PROJECT_NAME}/Makefile
 
+# Revert the musl-1.1.24 patch because we don't need it for 64-bit platforms
+RUN cd /build/nixpkgs && git apply -R /build/musl-1.1.24.patch
 # echo to NOP qemu commands to get around issue on Apple M1
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-x86_64.nix \
       --run "TARGET=x86_64-unknown-linux-musl make && \
              echo TARGET=x86_64-unknown-linux-musl make run"
+RUN cd /build/${RUST_PROJECT_NAME} && \
+    nix-shell shell-aarch64.nix \
+      --run "TARGET=aarch64-unknown-linux-musl make && \
+             echo TARGET=aarch64-unknown-linux-musl make run"
+# Re-apply the musl-1.1.24 patch for 32-bit platforms
+RUN cd /build/nixpkgs && git apply /build/musl-1.1.24.patch
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-armv6.nix \
       --run "TARGET=arm-unknown-linux-musleabihf make && \
@@ -69,7 +89,3 @@ RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-armv7.nix \
       --run "TARGET=armv7-unknown-linux-musleabihf make && \
              echo TARGET=armv7-unknown-linux-musleabihf make run"
-RUN cd /build/${RUST_PROJECT_NAME} && \
-    nix-shell shell-aarch64.nix \
-      --run "TARGET=aarch64-unknown-linux-musl make && \
-             echo TARGET=aarch64-unknown-linux-musl make run"
