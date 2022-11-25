@@ -5,10 +5,18 @@ CARGO_FLAGS := --release --target $(TARGET)
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 mkfile_dir := $(dir $(mkfile_path))
 
+ifeq ($(TARGET),x86_64-pc-windows-gnu)
+  SRC_BIN := $(mkfile_dir)/target/$(TARGET)/release/hello-random.exe
+  DEST_BIN := $(mkfile_dir)/out/hello-random-$(TARGET).exe
+else
+  SRC_BIN := $(mkfile_dir)/target/$(TARGET)/release/hello-random
+  DEST_BIN := $(mkfile_dir)/out/hello-random-$(TARGET)
+endif
+
 .PHONY: all
 all: Cargo.toml Cargo.lock src/main.rs
 	OPENSSL_STATIC=1 cargo build -vv --locked $(CARGO_FLAGS)
-	cp target/$(TARGET)/release/hello-random out/hello-random-$(TARGET)
+	cp $(SRC_BIN) $(DEST_BIN)
 
 .PHONY: run
 run: all
