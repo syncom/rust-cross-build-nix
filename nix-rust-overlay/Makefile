@@ -8,14 +8,16 @@ mkfile_dir := $(dir $(mkfile_path))
 ifeq ($(TARGET),x86_64-pc-windows-gnu)
   SRC_BIN := $(mkfile_dir)/target/$(TARGET)/release/hello-random.exe
   DEST_BIN := $(mkfile_dir)/out/hello-random-$(TARGET).exe
+	OPENSSL_STATIC_FLAG := OPENSSL_STATIC=0
 else
   SRC_BIN := $(mkfile_dir)/target/$(TARGET)/release/hello-random
   DEST_BIN := $(mkfile_dir)/out/hello-random-$(TARGET)
+	OPENSSL_STATIC_FLAG := OPENSSL_STATIC=1
 endif
 
 .PHONY: all
 all: Cargo.toml Cargo.lock src/main.rs
-	OPENSSL_STATIC=1 cargo build -vv --locked $(CARGO_FLAGS)
+	$(OPENSSL_STATIC_FLAG) cargo build -vv --locked $(CARGO_FLAGS)
 	cp $(SRC_BIN) $(DEST_BIN)
 
 .PHONY: run

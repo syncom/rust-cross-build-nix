@@ -15,9 +15,19 @@ fn main() -> std::io::Result<()> {
     let infile1 = std::fs::File::open("infile")?;
     zstd::stream::copy_encode(&infile1, &mut outfile, 0)?;
 
-    // Test linking against OpenSSL
-    openssl::init();
-    assert!(openssl::version::version().starts_with("OpenSSL "));
+    // Test linking against OpenSSL on unix target
+    openssl_init();
 
     Ok(())
+}
+
+#[cfg(target_family = "unix")]
+fn openssl_init() {
+    openssl::init();
+    assert!(openssl::version::version().starts_with("OpenSSL "));
+}
+
+#[cfg(not(target_family = "unix"))]
+fn openssl_init() {
+    println!("openssl not linked on this target");
 }
