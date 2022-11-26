@@ -74,13 +74,11 @@ RUN cd /build/nixpkgs && git apply -R /build/musl-1.1.24.patch
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-x86_64-win.nix --show-trace \
       --run "TARGET=x86_64-pc-windows-gnu make && \
-      TARGET=x86_64-pc-windows-gnu make run"
+      TARGET=x86_64-pc-windows-gnu make run" && \
 # echo to NOP qemu commands to get around issue on Apple M1
-RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-x86_64.nix \
       --run "TARGET=x86_64-unknown-linux-musl make && \
-             echo TARGET=x86_64-unknown-linux-musl make run"
-RUN cd /build/${RUST_PROJECT_NAME} && \
+             echo TARGET=x86_64-unknown-linux-musl make run" && \
     nix-shell shell-aarch64.nix \
       --run "TARGET=aarch64-unknown-linux-musl make && \
              echo TARGET=aarch64-unknown-linux-musl make run"
@@ -89,8 +87,7 @@ RUN cd /build/nixpkgs && git apply /build/musl-1.1.24.patch
 RUN cd /build/${RUST_PROJECT_NAME} && \
     nix-shell shell-armv6.nix \
       --run "TARGET=arm-unknown-linux-musleabihf make && \
-             echo TARGET=arm-unknown-linux-musleabihf make run"
-RUN cd /build/${RUST_PROJECT_NAME} && \
+             echo TARGET=arm-unknown-linux-musleabihf make run" && \
     nix-shell shell-armv7.nix \
       --run "TARGET=armv7-unknown-linux-musleabihf make && \
              echo TARGET=armv7-unknown-linux-musleabihf make run"
