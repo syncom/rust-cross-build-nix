@@ -72,7 +72,7 @@ COPY nix-rust-overlay/Makefile /build/${RUST_PROJECT_NAME}/Makefile
 # Revert the musl-1.1.24 patch because we don't need it for 64-bit platforms
 RUN cd /build/nixpkgs && git apply -R /build/musl-1.1.24.patch
 RUN cd /build/${RUST_PROJECT_NAME} && \
-    nix-shell shell-x86_64-win.nix \
+    nix-shell shell-x86_64-win.nix --show-trace \
       --run "TARGET=x86_64-pc-windows-gnu make && \
       TARGET=x86_64-pc-windows-gnu make run"
 # echo to NOP qemu commands to get around issue on Apple M1

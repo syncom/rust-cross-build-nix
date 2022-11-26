@@ -7,7 +7,7 @@
   };
   overlays = [ (import <rust-overlay>) ];
 }).callPackage (
-{ mkShell, stdenv, rust-bin, windows, wine64, pkg-config }:
+{ mkShell, stdenv, rust-bin, windows, wine64, pkg-config, openssl }:
 mkShell {
   nativeBuildInputs = [
     rust-bin.stable."1.63.0".minimal
@@ -16,7 +16,7 @@ mkShell {
 
   depsBuildBuild = [ wine64 ];
 
-  buildInputs = [ windows.pthreads ];
+  buildInputs = [ windows.pthreads openssl ];
 
   CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER = "${stdenv.cc.targetPrefix}cc";
   CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER = "wine64";
