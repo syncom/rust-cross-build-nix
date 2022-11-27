@@ -15,9 +15,20 @@ You need Docker for building the examples.
 
 [nix-cross-rs](./nix-cross-rs/)
 
+- This approach uses [cross-rs/cross](https://github.com/cross-rs/cross),
+managed by Nix, for the cross builds. It requires running a container engine
+(`podman`) inside a Docker container, and privileged access permissions.
+Compared to the second approach, this one is less "pure" and conceptually more
+complex. Hence this approach is less preferred.
+
 ## Approach 2
 
 [nix-rust-overlay](./nix-rust-overlay/)
+
+- This approach is "pure", in that it uses Nix to manage dependencies entirely.
+- It demonstrates how to statically link to `openssl` for the `unix` target family.
+- It demonstrates cross builds on a `windows` target (without `openssl` static
+linking, for simplicity).
 
 ## How to Build Using Both Approaches
 
@@ -27,8 +38,26 @@ In the directory root of the repository
 make
 ```
 
+Or for either approach
+
+```bash
+# Approach 1
+make cross-rs
+# Approach 2
+make rust-overlay
+```
+
 Clean up with command
 
 ```bash
 make clean
+```
+
+Or for either approach
+
+```bash
+# Approach 1
+make cr-clean
+# Approach 2
+make ro-clean
 ```
