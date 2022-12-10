@@ -3,9 +3,15 @@ name: "Reproducible build with cross-rs"
 
 on:
   push:
-    branches: [main]
+    paths-ignore:
+    - 'nix-rust-overlay/**'
+    branches:
+    - 'main'
   pull_request:
-    branches: [main]
+    paths-ignore:
+    - 'nix-rust-overlay/**'
+    branches:
+    - 'main'
 
 jobs:
     nix-cross-rs-build:
