@@ -8,7 +8,7 @@
 { mkShell, stdenv, rust-bin, pkg-config, openssl, qemu }:
 mkShell {
   nativeBuildInputs = [
-    rust-bin.stable.latest.minimal
+    rust-bin.stable."1.63.0".minimal
     pkg-config
   ];
 
