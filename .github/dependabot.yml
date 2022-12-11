@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      # Cf. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      timezone: "Etc/GMT"
+      time: "11:42"
+    # Disable version updates for cargo dependencies
+    open-pull-requests-limit: 0
