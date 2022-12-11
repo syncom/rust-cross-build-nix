@@ -8,8 +8,6 @@ WORKDIR /build
 # Custom project name
 ENV RUST_PROJECT_NAME="rust-cross-build-nix"
 
-# This commit is tagged as 21.11 in nixpkgs
-# ENV NIXPKGS_COMMIT_SHA="a7ecde854aee5c4c7cd6177f54a99d2c1ff28a31"
 # 22.05
 #ENV NIXPKGS_COMMIT_SHA="ce6aa13369b667ac2542593170993504932eb836"
 # This version has podman 4.2.0, which contains bugfix
