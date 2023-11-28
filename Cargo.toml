@@ -11,4 +11,4 @@ rand = "0.3.14"
 # The following commit results in a successful build, which reverts the above commit
 zstd = { git = "https://github.com/syncom/zstd-rs", rev ="abbc3b6a21c9825243933cbb6778781608db56dc" }
 [target.'cfg(unix)'.dependencies]
-openssl = "0.10.55"
+openssl = "0.10.60"
