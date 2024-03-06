@@ -1,5 +1,5 @@
 # The following information is from https://hub.docker.com/r/nixos/nix/tags
-FROM nixos/nix:2.20.4@sha256:e2fba5a4a052ae7d79aac1822bc3281a50ea5f34d5b953335be876ca08196ea5 as rust-overlay_builder
+FROM nixos/nix:2.9.0@sha256:13b257cd42db29dc851f9818ea1bc2f9c7128c51fdf000971fa6058c66fbe4b6 as rust-overlay_builder
 
 ###################################################################
 # Step 1: Prepare nixpkgs and rust-overlay for deterministic builds
@@ -8,8 +8,8 @@ WORKDIR /build
 # Custom project name
 ENV RUST_PROJECT_NAME="rust-cross-build-nix"
 
-# nixpkgs 23.11
-ENV NIXPKGS_COMMIT_SHA="057f9aecfb71c4437d2b27d3323df7f93c010b7e"
+# nixpkgs 22.05
+ENV NIXPKGS_COMMIT_SHA="ce6aa13369b667ac2542593170993504932eb836"
 # rust-overlay version 20240303
 ENV RUST_OVERLAY_COMMIT_SHA="30c3af18405567115958c577c62548bdc5a251e7"
 
