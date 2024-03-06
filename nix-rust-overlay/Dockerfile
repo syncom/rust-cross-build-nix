@@ -1,5 +1,5 @@
 # The following information is from https://hub.docker.com/r/nixos/nix/tags
-FROM nixos/nix:2.9.0@sha256:13b257cd42db29dc851f9818ea1bc2f9c7128c51fdf000971fa6058c66fbe4b6 as cross-rs_builder
+FROM nixos/nix:2.9.0@sha256:13b257cd42db29dc851f9818ea1bc2f9c7128c51fdf000971fa6058c66fbe4b6 as rust-overlay_builder
 
 ###################################################################
 # Step 1: Prepare nixpkgs and rust-overlay for deterministic builds
@@ -10,8 +10,8 @@ ENV RUST_PROJECT_NAME="rust-cross-build-nix"
 
 # nixpkgs 22.05
 ENV NIXPKGS_COMMIT_SHA="ce6aa13369b667ac2542593170993504932eb836"
-# rust-overlay version 20220827
-ENV RUST_OVERLAY_COMMIT_SHA="0c4c1432353e12b325d1472bea99e364871d2cb3"
+# rust-overlay version 20240303
+ENV RUST_OVERLAY_COMMIT_SHA="30c3af18405567115958c577c62548bdc5a251e7"
 
 # Apple M1 workaround
 COPY nix.conf /build/nix.conf
@@ -25,10 +25,9 @@ RUN nix-env -i git && \
     git fetch --depth 1 origin ${NIXPKGS_COMMIT_SHA} && \
     git checkout FETCH_HEAD && \
     cd .. && \
-    mkdir -p /build/cross && \
     git clone https://github.com/oxalica/rust-overlay.git && \
     cd rust-overlay && \
-    git checkout ${CROSS_COMMIT_SHA} && \
+    git checkout ${RUST_OVERLAY_COMMIT_SHA} && \
     cd .. && \
     mkdir -p /build/${RUST_PROJECT_NAME}/out
 
