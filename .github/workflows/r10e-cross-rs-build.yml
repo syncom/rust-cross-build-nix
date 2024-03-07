@@ -23,7 +23,7 @@ jobs:
       runs-on: ${{ matrix.os }}
       steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.1
       - name: Cross build artifacts
         run: |
           cd ${{ github.workspace }}
