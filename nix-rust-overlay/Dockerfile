@@ -38,6 +38,7 @@ ENV NIX_PATH=nixpkgs=/build/nixpkgs:rust-overlay=/build/rust-overlay
 #########################################################
 COPY nix-rust-overlay/shell-x86_64-win.nix /build/${RUST_PROJECT_NAME}/shell-x86_64-win.nix
 COPY nix-rust-overlay/shell-x86_64.nix /build/${RUST_PROJECT_NAME}/shell-x86_64.nix
+COPY nix-rust-overlay/shell-i686.nix /build/${RUST_PROJECT_NAME}/shell-i686.nix
 COPY nix-rust-overlay/shell-aarch64.nix /build/${RUST_PROJECT_NAME}/shell-aarch64.nix
 COPY nix-rust-overlay/shell-armv7.nix /build/${RUST_PROJECT_NAME}/shell-armv7.nix
 COPY nix-rust-overlay/shell-armv6.nix /build/${RUST_PROJECT_NAME}/shell-armv6.nix
@@ -59,6 +60,8 @@ RUN cd /build/${RUST_PROJECT_NAME} && \
       nix-shell shell-armv6.nix
 RUN cd /build/${RUST_PROJECT_NAME} && \
       nix-shell shell-armv7.nix
+RUN cd /build/${RUST_PROJECT_NAME} && \
+      nix-shell shell-i686.nix
 
 #########################################################
 # Step 3: Cross builds for various targets
@@ -89,4 +92,7 @@ RUN cd /build/${RUST_PROJECT_NAME} && \
              echo TARGET=arm-unknown-linux-musleabihf make run" && \
     nix-shell shell-armv7.nix \
       --run "TARGET=armv7-unknown-linux-musleabihf make && \
-             echo TARGET=armv7-unknown-linux-musleabihf make run"
+             echo TARGET=armv7-unknown-linux-musleabihf make run" && \
+    nix-shell shell-i686.nix \
+      --run "TARGET=i686-unknown-linux-musl make && \
+             echo TARGET=i686-unknown-linux-musl make run"
