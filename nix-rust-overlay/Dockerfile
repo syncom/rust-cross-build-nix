@@ -10,8 +10,11 @@ ENV RUST_PROJECT_NAME="rust-cross-build-nix"
 
 # nixpkgs 22.05
 ENV NIXPKGS_COMMIT_SHA="ce6aa13369b667ac2542593170993504932eb836"
-# rust-overlay version 20240303
-ENV RUST_OVERLAY_COMMIT_SHA="30c3af18405567115958c577c62548bdc5a251e7"
+# rust-overlay version 20240502 with latest rust-bin.stable 1.78.0
+# Note that this is the previous commit of the problematic commit
+# 0bf05d8534406776a0fbc9ed8d4ef5bd925b056a that seemed to have introduced a
+# breaking change
+ENV RUST_OVERLAY_COMMIT_SHA="2e7ccf572ce0f0547d4cf4426de4482936882d0e"
 
 # Apple M1 workaround
 COPY nix.conf /build/nix.conf
