@@ -10,7 +10,7 @@
 { mkShell, stdenv, rust-bin, windows, wine64, pkg-config }:
 mkShell {
   nativeBuildInputs = [
-    rust-bin.stable."1.78.0".minimal
+    rust-bin.stable."1.77.0".minimal
     pkg-config
   ];
 
