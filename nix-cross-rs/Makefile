@@ -4,7 +4,7 @@ mkfile_dir := $(dir $(mkfile_path))
 all: cross-build
 
 cross-build:
-	$(mkfile_dir)/run.sh 2>/dev/null
+	$(mkfile_dir)/run.sh
 
 clean:
 	rm -rf $(mkfile_dir)/out
