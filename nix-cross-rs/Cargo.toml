@@ -5,9 +5,9 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-rand = "0.4.6"
+rand = "0.7.0"
 # The following commit breaks cross builds
 #zstd = { git = "https://github.com/gyscos/zstd-rs", rev ="f0d8a12f0f520095cf26a0dac35b8d0939277add" }
 # The following commit results in a successful build, which reverts the above commit
 zstd = { git = "https://github.com/syncom/zstd-rs", rev ="abbc3b6a21c9825243933cbb6778781608db56dc" }
-openssl = { version = "0.10.70", features = ["vendored"] }
+openssl = { version = "0.10.72", features = ["vendored"] }
