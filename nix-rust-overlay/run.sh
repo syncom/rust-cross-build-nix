@@ -31,7 +31,13 @@ self_test
 echo "Creating builder container image..."
 # Need to run docker build in script's parent directory
 cd "${SCRIPT_DIR}/.."
-docker build --platform linux/amd64 -f "${SCRIPT_DIR}/Dockerfile" -t "${BUILDER_TAG_NAME}" .
+docker buildx build --platform linux/amd64 --load \
+  -f "${SCRIPT_DIR}/Dockerfile" \
+  -t "${BUILDER_TAG_NAME}" \
+  . \
+  --builder "$(docker buildx create --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=-1 --driver-opt env.BUILDKIT_STEP_LOG_MAX_SPEED=-1)"
+
+
 docker images "${BUILDER_TAG_NAME}"
 rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}"

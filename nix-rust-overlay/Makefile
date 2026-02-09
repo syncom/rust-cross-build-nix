@@ -1,5 +1,5 @@
 # This Makefile is expected to be run inside nix-shell.
-TARGET ?= x86_64-unknown-linux-musl
+TARGET ?= x86_64-unknown-linux-gnu
 CARGO_FLAGS := --release --target $(TARGET)
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -12,7 +12,7 @@ ifeq ($(TARGET),x86_64-pc-windows-gnu)
 else
   SRC_BIN := $(mkfile_dir)/target/$(TARGET)/release/hello-random
   DEST_BIN := $(mkfile_dir)/out/hello-random-$(TARGET)
-	OPENSSL_STATIC_FLAG := OPENSSL_STATIC=1
+	OPENSSL_STATIC_FLAG := OPENSSL_STATIC=0
 endif
 
 .PHONY: all

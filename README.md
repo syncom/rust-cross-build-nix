@@ -26,9 +26,9 @@ complex. Hence this approach is less preferred.
 [nix-rust-overlay](./nix-rust-overlay/)
 
 - This approach is "pure", in that it uses Nix to manage dependencies entirely.
-- It demonstrates how to statically link to `openssl` for the `unix` target family.
-- It demonstrates cross builds on a `windows` target (without `openssl` static
-linking, for simplicity).
+- ~~It demonstrates how to statically link to `openssl` for the `unix` target
+  family.~~ `openssl` static linking is a pain - we dropped the support.
+- It demonstrates cross builds on a `windows` target
 
 ## How to Build Using Both Approaches
 
