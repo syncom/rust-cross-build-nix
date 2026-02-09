@@ -22,6 +22,14 @@ jobs:
           os: [ubuntu-latest]
       runs-on: ${{ matrix.os }}
       steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
+
+          
       - name: Checkout repository
         uses: actions/checkout@v4.1.1
       - name: Cross build artifacts
