@@ -5,7 +5,7 @@
   crossSystem = "aarch64-linux";
   overlays = [ (import <rust-overlay>) ];
 }).pkgsMusl.pkgsStatic.callPackage (
-{ mkShell, stdenv, rust-bin, pkg-config, openssl, qemu }:
+{ mkShell, stdenv, rust-bin, pkg-config, qemu }:
 mkShell {
   nativeBuildInputs = [
     rust-bin.stable."1.92.0".minimal
@@ -13,8 +13,6 @@ mkShell {
   ];
 
   depsBuildBuild = [ qemu ];
-
-  buildInputs = [ openssl ];
 
   CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER = "${stdenv.cc.targetPrefix}cc";
   CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUNNER = "qemu-aarch64";
